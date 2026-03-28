@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: mfine-admin
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        value: "" # Empty because in production, CORS accepts same-origin and proxy is built-in
+      # SMTP details (Optional - must be filled out in Render dashboard if needed for password resets/emails)
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_EMAIL
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
