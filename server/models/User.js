@@ -50,8 +50,9 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 // Sign JWT
 userSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+  const secret = process.env.JWT_SECRET || 'mfine_fallback_production_secret_key_123!';
+  return jwt.sign({ id: this._id, role: this.role }, secret, {
+    expiresIn: process.env.JWT_EXPIRE || '7d',
   });
 };
 

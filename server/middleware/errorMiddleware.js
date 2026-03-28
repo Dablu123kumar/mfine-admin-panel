@@ -7,6 +7,7 @@ export const notFound = (req, res, next) => {
 
 // Global error handler
 export const errorHandler = (err, req, res, next) => {
+  console.error("Error occurred:", err); // Log the error for production debugging
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message;
 
