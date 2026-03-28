@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: [true, 'Password is required'], minlength: 6, select: false },
     role: {
       type: String,
-      enum: ['superadmin', 'admin', 'manager', 'support', 'finance'],
+      enum: ['superadmin', 'admin', 'manager', 'support', 'finance', 'user'],
       default: 'support',
     },
     avatar: { type: String, default: '' },
