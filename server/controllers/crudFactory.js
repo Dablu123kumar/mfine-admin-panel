@@ -8,8 +8,15 @@ export const createOne = (Model) => async (req, res, next) => {
 
 export const getAll = (Model, populateOptions = '') => async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, search, sort = '-createdAt', status, ...filters } = req.query;
-    const query = { ...filters };
+    const { page = 1, limit = 10, search, sort = '-createdAt' } = req.query;
+    const query = {};
+    
+    // Dynamically add all non-empty filters
+    for (const [key, value] of Object.entries(req.query)) {
+      if (!['page', 'limit', 'search', 'sort'].includes(key) && value !== '') {
+        query[key] = value;
+      }
+    }
 
     if (search) {
       query.$or = [
@@ -17,7 +24,6 @@ export const getAll = (Model, populateOptions = '') => async (req, res, next) =>
         { email: { $regex: search, $options: 'i' } },
       ];
     }
-    if (status) query.status = status;
 
     const skip = (Number(page) - 1) * Number(limit);
     const total = await Model.countDocuments(query);

@@ -23,6 +23,7 @@ import specialityRoutes from './routes/specialityRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
 
 dotenv.config();
 
@@ -73,6 +74,7 @@ app.use('/api/v1/specialities', specialityRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/reports', reportRoutes);
+app.use('/api/v1/customer', customerRoutes);
 
 // Serve React in production
 if (process.env.NODE_ENV === 'production') {

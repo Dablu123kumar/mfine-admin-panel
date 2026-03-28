@@ -12,6 +12,7 @@ const DoctorDetail = lazy(() => import('./pages/DoctorDetail.js'));
 const Patients = lazy(() => import('./pages/Patients.js'));
 const PatientDetail = lazy(() => import('./pages/PatientDetail.js'));
 const Appointments = lazy(() => import('./pages/Appointments.js'));
+const CustomerDashboard = lazy(() => import('./pages/CustomerDashboard.js'));
 const Payments = lazy(() => import('./pages/Payments.js'));
 const LabTests = lazy(() => import('./pages/LabTests.js'));
 const Medicines = lazy(() => import('./pages/Medicines.js'));
@@ -40,7 +41,14 @@ const ProtectedRoute = ({ children, roles }) => {
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to={user.role === 'user' ? "/customer" : "/"} replace />;
+  return children;
+};
+
+const CustomerRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <PageLoader />;
+  if (!user || user.role !== 'user') return <Navigate to="/login" replace />;
   return children;
 };
 
@@ -48,6 +56,11 @@ const AppRoutes = () => (
   <Suspense fallback={<PageLoader />}>
     <Routes>
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+      
+      {/* Customer Routes */}
+      <Route path="/customer/*" element={<CustomerRoute><CustomerDashboard /></CustomerRoute>} />
+
+      {/* Admin / Staff Routes */}
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Dashboard />} />
         <Route path="doctors" element={<Doctors />} />

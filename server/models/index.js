@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 const paymentSchema = new mongoose.Schema(
   {
     transactionId: { type: String, unique: true },
-    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+    customerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
     type: { type: String, enum: ['appointment', 'lab-test', 'medicine', 'wallet-topup', 'refund'], required: true },
     reference: { type: mongoose.Schema.Types.ObjectId },
     referenceModel: { type: String, enum: ['Appointment', 'LabTest', 'Medicine'] },
@@ -54,7 +55,8 @@ export const Speciality = mongoose.model('Speciality', specialitySchema);
 const labTestSchema = new mongoose.Schema(
   {
     orderId: { type: String, unique: true },
-    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+    customerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
     tests: [
       {
         name: String,
@@ -89,7 +91,8 @@ export const LabTest = mongoose.model('LabTest', labTestSchema);
 const medicineSchema = new mongoose.Schema(
   {
     orderId: { type: String, unique: true },
-    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+    customerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
     prescription: { type: mongoose.Schema.Types.ObjectId, ref: 'Prescription' },
     items: [
       {

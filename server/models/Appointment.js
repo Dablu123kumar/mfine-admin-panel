@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 const appointmentSchema = new mongoose.Schema(
   {
     appointmentId: { type: String, unique: true },
-    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+    customerUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' }, // Optional for customer booking
     doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor', required: true },
     speciality: { type: mongoose.Schema.Types.ObjectId, ref: 'Speciality' },
     type: { type: String, enum: ['chat', 'audio', 'video'], required: true },

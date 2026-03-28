@@ -33,6 +33,14 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  const registerCustomer = async (details) => {
+    const { data } = await authAPI.registerCustomer(details);
+    localStorage.setItem('mfine_token', data.token);
+    localStorage.setItem('mfine_user', JSON.stringify(data.data));
+    setUser(data.data);
+    return data;
+  };
+
   const logout = async () => {
     try { await authAPI.logout(); } catch {}
     localStorage.removeItem('mfine_token');
@@ -48,9 +56,10 @@ export const AuthProvider = ({ children }) => {
   const hasRole = (...roles) => roles.includes(user?.role);
   const isAdmin = () => hasRole('superadmin', 'admin');
   const isSuperAdmin = () => hasRole('superadmin');
+  const isCustomer = () => hasRole('user');
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser, hasRole, isAdmin, isSuperAdmin }}>
+    <AuthContext.Provider value={{ user, loading, login, registerCustomer, logout, updateUser, hasRole, isAdmin, isSuperAdmin, isCustomer }}>
       {children}
     </AuthContext.Provider>
   );

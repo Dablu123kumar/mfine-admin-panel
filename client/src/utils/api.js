@@ -34,6 +34,7 @@ export default api;
 // ─── API helpers ──────────────────────────────────────────────────────────────
 export const authAPI = {
   login: (data) => api.post('/auth/login', data),
+  registerCustomer: (data) => api.post('/auth/register-customer', data),
   logout: () => api.post('/auth/logout'),
   me: () => api.get('/auth/me'),
   updateProfile: (data) => api.put('/auth/update-profile', data),
@@ -92,4 +93,26 @@ export const notificationsAPI = {
 };
 export const reportsAPI = {
   getRevenue: (params) => api.get('/reports/revenue', { params }),
+};
+
+export const customerAPI = {
+  getDoctors: (params) => api.get('/doctors', { params }),
+  getAppointments: (params) => api.get('/customer/appointments', { params }),
+  bookAppointment: (data) => api.post('/customer/appointments', data),
+  getLabTests: (params) => api.get('/customer/lab-tests', { params }),
+  orderLabTest: (data) => api.post('/customer/lab-tests', data),
+  getMedicines: (params) => api.get('/customer/medicines', { params }),
+  orderMedicine: (data) => api.post('/customer/medicines', data),
+  getPayments: (params) => api.get('/customer/payments', { params }),
+  processPayment: (data) => api.post('/customer/payments/process', data),
+  getPrescriptions: (params) => api.get('/customer/prescriptions', { params }),
+};
+
+export const medicineCatalogAPI = {
+  browse: (params) => api.get('/medicine-catalog', { params }),
+  getAll: (params) => api.get('/medicine-catalog', { params }),
+  getOne: (id) => api.get(`/medicine-catalog/${id}`),
+  create: (data) => api.post('/medicine-catalog', data),
+  update: (id, data) => api.put(`/medicine-catalog/${id}`, data),
+  delete: (id) => api.delete(`/medicine-catalog/${id}`),
 };

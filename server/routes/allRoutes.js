@@ -9,6 +9,7 @@ import {
 import { getDashboardStats, getActivityFeed } from '../controllers/dashboardController.js';
 import { Notification } from '../models/index.js';
 import { createOne, getAll, getOne, updateOne } from '../controllers/crudFactory.js';
+import { customerController } from '../controllers/customerController.js';
 
 // ─── User Routes ──────────────────────────────────────────────────────────────
 export const userRouter = express.Router();
@@ -113,3 +114,16 @@ reportRouter.get('/revenue', async (req, res, next) => {
     res.status(200).json({ success: true, data });
   } catch (err) { next(err); }
 });
+
+// ─── Customer Routes ──────────────────────────────────────────────────────────
+export const customerRouter = express.Router();
+customerRouter.use(protect); // Need to be logged in as user
+customerRouter.get('/appointments', customerController.getAppointments);
+customerRouter.post('/appointments', customerController.bookAppointment);
+customerRouter.get('/lab-tests', customerController.getLabTests);
+customerRouter.post('/lab-tests', customerController.orderLabTest);
+customerRouter.get('/medicines', customerController.getMedicines);
+customerRouter.post('/medicines', customerController.orderMedicine);
+customerRouter.get('/payments', customerController.getPayments);
+customerRouter.post('/payments/process', customerController.processPayment);
+customerRouter.get('/prescriptions', customerController.getPrescriptions);

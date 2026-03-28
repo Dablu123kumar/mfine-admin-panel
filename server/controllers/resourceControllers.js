@@ -90,6 +90,7 @@ export const appointmentController = {
     { path: 'patient', select: 'name email phone avatar' },
     { path: 'doctor', select: 'name email avatar speciality' },
     { path: 'speciality', select: 'name icon' },
+    { path: 'customerUserId', select: 'name email' },
   ]),
   getOne: getOne(Appointment, [
     { path: 'patient' }, { path: 'doctor' }, { path: 'prescription' },
@@ -127,7 +128,10 @@ export const appointmentController = {
 
 // ─── Payment Controller ───────────────────────────────────────────────────────
 export const paymentController = {
-  getAll: getAll(Payment, { path: 'patient', select: 'name email' }),
+  getAll: getAll(Payment, [
+    { path: 'patient', select: 'name email' },
+    { path: 'customerUserId', select: 'name email' }
+  ]),
   getOne: getOne(Payment, { path: 'patient', select: 'name email phone' }),
   update: updateOne(Payment),
 
@@ -164,7 +168,10 @@ export const specialityController = {
 
 // ─── Lab Test Controller ──────────────────────────────────────────────────────
 export const labTestController = {
-  getAll: getAll(LabTest, { path: 'patient', select: 'name email phone' }),
+  getAll: getAll(LabTest, [
+    { path: 'patient', select: 'name email phone' },
+    { path: 'customerUserId', select: 'name email' }
+  ]),
   getOne: getOne(LabTest, { path: 'patient' }),
   update: updateOne(LabTest),
   delete: deleteOne(LabTest),
@@ -172,7 +179,10 @@ export const labTestController = {
 
 // ─── Medicine Controller ──────────────────────────────────────────────────────
 export const medicineController = {
-  getAll: getAll(Medicine, { path: 'patient', select: 'name email phone' }),
+  getAll: getAll(Medicine, [
+    { path: 'patient', select: 'name email phone' },
+    { path: 'customerUserId', select: 'name email' }
+  ]),
   getOne: getOne(Medicine, { path: 'patient' }),
   update: updateOne(Medicine),
   delete: deleteOne(Medicine),

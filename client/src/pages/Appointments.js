@@ -80,7 +80,12 @@ const Appointments = () => {
                   {data.data.map(apt => (
                     <tr key={apt._id}>
                       <td style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--text-muted)' }}>{apt.appointmentId}</td>
-                      <td><AvatarName name={apt.patient?.name} size={30} /></td>
+                      <td>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <AvatarName name={apt.patient?.name || apt.customerUserId?.name || 'Unknown'} size={30} />
+                          {apt.customerUserId && !apt.patient && <span style={{ fontSize: 10, color: '#8B5CF6', fontWeight: 700, background: 'rgba(139,92,246,0.15)', padding: '2px 6px', borderRadius: 4, alignSelf: 'flex-start', marginLeft: 40, marginTop: -4 }}>Customer</span>}
+                        </div>
+                      </td>
                       <td style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Dr. {apt.doctor?.name}</td>
                       <td>
                         <span style={{ padding: '3px 10px', borderRadius: 'var(--radius-full)', fontSize: 12, fontWeight: 600, background: TYPE_BADGE[apt.type]?.bg, color: TYPE_BADGE[apt.type]?.color }}>

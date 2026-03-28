@@ -32,6 +32,18 @@ export const register = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+// @desc    Register customer/patient
+// @route   POST /api/v1/auth/register-customer
+// @access  Public
+export const registerCustomer = async (req, res, next) => {
+  try {
+    const { name, email, password, phone } = req.body;
+    // Default role 'user' for customers
+    const user = await User.create({ name, email, password, phone, role: 'user' });
+    sendTokenResponse(user, 201, res);
+  } catch (error) { next(error); }
+};
+
 // @desc    Login
 // @route   POST /api/v1/auth/login
 // @access  Public
@@ -45,12 +57,12 @@ export const login = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select('+password');
     //console.log(user)
-    if (!user ||  user.password !== password) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
-    }
-    // if (!user || !(await user.matchPassword(password))) {
+    // if (!user || user.password !== password) {
     //   return res.status(401).json({ success: false, message: 'Invalid credentials' });
     // }
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
     if (!user.isActive) {
       return res.status(401).json({ success: false, message: 'Account has been deactivated' });
     }

@@ -50,7 +50,7 @@ const BookAppointmentModal = ({ isOpen, onClose, onSuccess }) => {
 
   const { data: doctorsData, isLoading: docLoading } = useQuery({
     queryKey: ['customer-doctors', search],
-    queryFn: () => customerAPI.getDoctors({ search, limit: 12 }).then(r => r.data.data),
+    queryFn: () => customerAPI.getDoctors({ search, limit: 12 }).then(r => r.data),
     enabled: isOpen,
   });
 
@@ -308,7 +308,7 @@ const MakePaymentModal = ({ isOpen, onClose, onSuccess, prefill }) => {
   const [form, setForm] = useState({ type: prefill?.type || 'appointment', amount: prefill?.amount || '', method: 'upi', notes: '' });
 
   const mutation = useMutation({
-    mutationFn: (d) => customerAPI.makePayment(d),
+    mutationFn: (d) => customerAPI.processPayment(d),
     onSuccess: () => {
       toast.success('Payment successful! ✅'); qc.invalidateQueries(['my-payments']); qc.invalidateQueries(['customer-stats']);
       onSuccess(); onClose();
@@ -370,7 +370,7 @@ const MakePaymentModal = ({ isOpen, onClose, onSuccess, prefill }) => {
 const MyAppointments = ({ onBook, onPay }) => {
   const qc = useQueryClient();
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery({ queryKey: ['my-appointments', page], queryFn: () => customerAPI.getAppointments({ page, limit: 8 }).then(r => r.data.data) });
+  const { data, isLoading } = useQuery({ queryKey: ['my-appointments', page], queryFn: () => customerAPI.getAppointments({ page, limit: 8 }).then(r => r.data) });
 
   const cancelMutation = useMutation({
     mutationFn: (id) => customerAPI.cancelAppointment(id, {}),
@@ -434,7 +434,7 @@ const MyAppointments = ({ onBook, onPay }) => {
 // ─── My Payments ──────────────────────────────────────────────────────────────
 const MyPayments = ({ onPay }) => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery({ queryKey: ['my-payments', page], queryFn: () => customerAPI.getPayments({ page, limit: 8 }).then(r => r.data.data) });
+  const { data, isLoading } = useQuery({ queryKey: ['my-payments', page], queryFn: () => customerAPI.getPayments({ page, limit: 8 }).then(r => r.data) });
 
   if (isLoading) return <PageSpinner />;
   return (
@@ -472,7 +472,7 @@ const MyPayments = ({ onPay }) => {
 // ─── My Lab Tests ─────────────────────────────────────────────────────────────
 const MyLabTests = ({ onOrder, onPay }) => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery({ queryKey: ['my-lab-tests', page], queryFn: () => customerAPI.getLabTests({ page, limit: 8 }).then(r => r.data.data) });
+  const { data, isLoading } = useQuery({ queryKey: ['my-lab-tests', page], queryFn: () => customerAPI.getLabTests({ page, limit: 8 }).then(r => r.data) });
 
   if (isLoading) return <PageSpinner />;
   return (
@@ -524,7 +524,7 @@ const MyLabTests = ({ onOrder, onPay }) => {
 // ─── My Medicines ─────────────────────────────────────────────────────────────
 const MyMedicines = ({ onOrder, onPay }) => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery({ queryKey: ['my-medicines', page], queryFn: () => customerAPI.getMedicines({ page, limit: 8 }).then(r => r.data.data) });
+  const { data, isLoading } = useQuery({ queryKey: ['my-medicines', page], queryFn: () => customerAPI.getMedicines({ page, limit: 8 }).then(r => r.data) });
 
   if (isLoading) return <PageSpinner />;
   return (
